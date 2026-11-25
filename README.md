@@ -76,27 +76,20 @@ python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12_Sp
 ``` 
 There are a lot of arguments here, below is a cheat sheet. When lambda_* is set to 0.
 ```
-    # ================ Pearson Depth Loss =============
-    self.lambda_pearson = 0.0 # weight for global pearson loss
+    # Global and local depth correlation losses
+        self.lambda_pearson = 0.05       # Global Pearson loss weight
+        self.lambda_local_pearson = 0.15 # Local Pearson loss weight
+        self.box_p = 128                 # Local patch size in pixels
+        self.p_corr = 0.5                # Patch sampling parameter
 
-    self.lambda_local_pearson = 0.0 # weight for patch-based pearson loss
-    self.box_p = 128 # patch size
-    self.p_corr = 0.5 # number of patches sampled at each iteration
+        # Diffusion guidance
+        self.step_ratio = 0.99          # Diffusion step ratio
+        self.lambda_diffusion = 0.0     # Diffusion loss weight
+        self.SDS_freq = 0.1             # SDS application frequency
 
-    self.beta = 5.0 # Temperature value for the softmax depth function
-    
-    # ======== Diffusion Params ============
-    # Note: SDS Loss kicks in after two-thirds of the training iterations
-
-    self.step_ratio = 0.95 # lower is more noisy, = 1 means no diffusion
-    self.lambda_diffusion = 0.0
-    self.SDS_freq = 0.1 # SDS apply frequency, = 1 means every iteration
-    # ================================================
-
-    # =========== Depth Warping Loss Params ===========
-    self.lambda_reg = 0.0
-    self.warp_reg_start_itr = 4999 # warping loss kicks in iteration
-    # ================================================
+        # Cross-view depth reprojection regularization
+        self.lambda_reg = 0.1           # Depth reprojection loss weight
+        self.warp_reg_start_itr = 4999   # Starting iteration for warping loss
 ```
 
 
