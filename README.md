@@ -11,9 +11,9 @@
 Conda environment:
 ```bash
 conda env create --file environment.yml
-conda activate SparseGS
+conda activate BSPC-GS
 ```
-We suggest using **CUDA 12** but CUDA 11 should work. You may need to change the cudatoolkit and pytorch version in the .yml file. 
+We suggest using **CUDA 12** You may need to change the cudatoolkit and pytorch version in the .yml file. 
 
 ## Data Preparation
 For data preparation, we use the same COLMAP preprocessing pipeline as the original 3DGS. If you are not familiar with the format below, use convert.py as reference. Your input data folder should look like this:
@@ -72,7 +72,7 @@ data -- kitchen_12 -- images -- DSCF0656.JPG
 ## Training
 Train BSPC-GS:
 ``` 
-python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12_SparseGS --beta 5.0 --lambda_pearson 0.05 --lambda_local_pearson 0.15 --box_p 128 --p_corr 0.5 --lambda_diffusion 0.001 --SDS_freq 0.1 --step_ratio 0.99 --lambda_reg 0.1  --iterations 30000 --checkpoint_iterations 10000
+python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12 --beta 5.0 --lambda_pearson 0.05 --lambda_local_pearson 0.15 --box_p 128 --p_corr 0.5 --lambda_diffusion 0.001 --SDS_freq 0.1 --step_ratio 0.99 --lambda_reg 0.1  --iterations 30000 --checkpoint_iterations 10000
 ``` 
 There are a lot of arguments here, below is a cheat sheet. When lambda_* is set to 0.
 ```
