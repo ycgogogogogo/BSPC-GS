@@ -74,7 +74,7 @@ Train BSPC-GS:
 ``` 
 python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12_SparseGS --beta 5.0 --lambda_pearson 0.05 --lambda_local_pearson 0.15 --box_p 128 --p_corr 0.5 --lambda_diffusion 0.001 --SDS_freq 0.1 --step_ratio 0.99 --lambda_reg 0.1  --iterations 30000 --checkpoint_iterations 10000
 ``` 
-There are a lot of arguments here, below is a cheat sheet. When lambda_* is set to 0, the corresponding component is disabled. If prun_sched is not set, floater pruning is disabled.
+There are a lot of arguments here, below is a cheat sheet. When lambda_* is set to 0.
 ```
     # ================ Pearson Depth Loss =============
     self.lambda_pearson = 0.0 # weight for global pearson loss
