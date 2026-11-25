@@ -1,10 +1,4 @@
-# SparseGS: Real-Time 360° Sparse View Synthesis using Gaussian Splatting
-
-
-
-[![Paper](https://img.shields.io/badge/cs.CV-Paper-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2312.00206)
-[![Project Page](https://img.shields.io/badge/SparseGS-Website-blue?logo=googlechrome&logoColor=blue)](https://formycat.github.io/SparseGS-Real-Time-360-Sparse-View-Synthesis-using-Gaussian-Splatting/)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FForMyCat%2FSparseGS&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+# BSPC-GS: Bidirectional Sparse Point Cloud Compensation for Sparse-View 3D Gaussian Splatting
 
 
 
@@ -76,9 +70,9 @@ data -- kitchen_12 -- images -- DSCF0656.JPG
 
 
 ## Training
-Train SparseGS:
+Train BSPC-GS:
 ``` 
-python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12_SparseGS --beta 5.0 --lambda_pearson 0.05 --lambda_local_pearson 0.15 --box_p 128 --p_corr 0.5 --lambda_diffusion 0.001 --SDS_freq 0.1 --step_ratio 0.99 --lambda_reg 0.1 --prune_sched 20000 --prune_perc 0.98 --prune_exp 7.5 --iterations 30000 --checkpoint_iterations 30000 -r 2
+python3 train.py --source_path data/kitchen_12 --model_path output/kitchen_12_SparseGS --beta 5.0 --lambda_pearson 0.05 --lambda_local_pearson 0.15 --box_p 128 --p_corr 0.5 --lambda_diffusion 0.001 --SDS_freq 0.1 --step_ratio 0.99 --lambda_reg 0.1  --iterations 30000 --checkpoint_iterations 10000
 ``` 
 There are a lot of arguments here, below is a cheat sheet. When lambda_* is set to 0, the corresponding component is disabled. If prun_sched is not set, floater pruning is disabled.
 ```
@@ -90,15 +84,8 @@ There are a lot of arguments here, below is a cheat sheet. When lambda_* is set 
     self.p_corr = 0.5 # number of patches sampled at each iteration
 
     self.beta = 5.0 # Temperature value for the softmax depth function
-    # ==================================================
-
-    # ================= Floater Pruning ==============
-    self.prune_sched = 20000 # Floater Pruning iteration 
-    self.prune_exp = 7.0 # lower is less aggresive
-    self.prune_perc = 0.98 # higher is less aggresive
-    # ================================================
-
-    # ======== Diffusion(SDS Loss) Params ============
+    
+    # ======== Diffusion Params ============
     # Note: SDS Loss kicks in after two-thirds of the training iterations
 
     self.step_ratio = 0.95 # lower is more noisy, = 1 means no diffusion
@@ -117,7 +104,7 @@ There are a lot of arguments here, below is a cheat sheet. When lambda_* is set 
 Run the following script to render the images. The render images will be saved under **renders** inside your model folder. Note that the **--source_path** needs to point to the full data folder (not the sparse one used for training). You may download the full data [here](https://drive.google.com/drive/folders/1VVkkPw_ubQ0A3052ErDK4PyDgT9hqfKJ?usp=sharing).
 
 ```
-python3 render.py --source_path ./data/kitchen --model_path ./output/kitchen_12_SparseGS --no_load_depth --iteration 30000
+python3 render.py --source_path ./data/kitchen --model_path ./output/kitchen_12 --no_load_depth --iteration 30000
 ```
 
 
@@ -125,26 +112,6 @@ python3 render.py --source_path ./data/kitchen --model_path ./output/kitchen_12_
 Please run the following script to evaluate your model. **--exclude_path** should point to your training data since they should be excluded when calculating metrics.
 
 ```
-python3 metrics.py --model_path ./output/kitchen_12_SparseGS --exclude_path ./data/kitchen_12
+python3 metrics.py --model_path ./output/kitchen_12 --exclude_path ./data/kitchen_12
 ```
 
-## Acknowledgement
-
-Special thanks to the following awesome projects!
-
-- [Gaussian-Splatting](https://github.com/graphdeco-inria/gaussian-splatting)
-- [FSGS](https://github.com/VITA-Group/FSGS)
-- [BoostingMonocularDepth](https://github.com/compphoto/BoostingMonocularDepth?tab=readme-ov-file)
-- [DreamGaussian](https://github.com/dreamgaussian/dreamgaussian)
-
-## Citation
-If you find this project interesting, please consider citing our paper.
-
-```
-@misc{xiong2023sparsegs,
-author = {Xiong, Haolin and Muttukuru, Sairisheek and Upadhyay, Rishi and Chari, Pradyumna and Kadambi, Achuta},
-title = {SparseGS: Real-Time 360° Sparse View Synthesis using Gaussian Splatting},
-journal = {Arxiv},
-year = {2023},
-}
-```
